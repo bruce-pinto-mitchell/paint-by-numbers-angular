@@ -1,3 +1,20 @@
-<p>
-  manual-process works!
-</p>
+<div class="flex-column">
+  <h2 class="header-text">Please select the image you would like to process:</h2>
+</div>
+<ngu-carousel
+  [inputs]="carouselTile"
+  (carouselLoad)="carouselTileLoad($event)"
+  (onMove)="onmoveFn($event)">
+  <ngu-tile NguCarouselItem *ngFor="let Tile of carouselTileItems">
+    <img src="{{Tile.src}}">
+  </ngu-tile>
+
+  <button NguCarouselPrev class='leftRs'>&lt;</button>
+  <button NguCarouselNext class='rightRs'>&gt;</button>
+</ngu-carousel>
+<div class="flex-column">
+  <button class="selection-button" (click)="onProcessImageClicked()">Process Image {{selectedImage}}</button>
+</div>
+  <div *ngIf="imageSelected">
+  <canvas id="imageToProcess"></canvas>
+</div>

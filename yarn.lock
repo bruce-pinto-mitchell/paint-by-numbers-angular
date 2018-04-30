@@ -176,6 +176,10 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
+"@ngu/carousel@^1.4.8":
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-1.4.8.tgz#102a2472e319fa2c048d59b5c1c347f2ef60f922"
+
 "@schematics/angular@0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.3.2.tgz#be209a032a3e4577992d94fbaa14bd4bfde485e2"
@@ -2591,6 +2595,10 @@ globule@^1.0.0:
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
 
 handle-thing@^1.2.5:
   version "1.2.5"
