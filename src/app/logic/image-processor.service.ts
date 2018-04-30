@@ -9,6 +9,7 @@ export class ImageProcessorService {
   private _tileData: Array<any> = [];
   private _replacementImages: Array<any> = [];
   private _imageToTileMapping: Array<any> = [];
+  private _finishedLoading: boolean = false;
 
   constructor() {
 
@@ -25,18 +26,18 @@ export class ImageProcessorService {
   }
 
   onProcessImageClicked(): void {
+    if (!this._finishedLoading) {
+      console.warn('Still loading image assets, please wait');
+      return;
+    }
     const tileHeight = this._canvasContext.height / 20,
       tileWidth = this._canvasContext.width / 20;
 
     this._tileData.forEach((tile, index) => {
-      console.log(`Tile Data ${this._tileData}`);
-      console.log(`Replacement Images ${this._replacementImages}`);
-      console.log(`Image To File Mapping ${this._imageToTileMapping}`);
       const replacementImage = this._replacementImages[this._imageToTileMapping[index]];
-      // replacementImage.image.height = tileHeight;
-      // replacementImage.image.width = tileWidth;
-      this._canvasContext.putImageData(replacementImage.imageData.rawData, 0, 0);
-      // this._canvasContext.putImageData(replacementImage.imageData.rawData, tile.x * tileWidth, tile.y * tileHeight);
+      replacementImage.image.height = tileHeight;
+      replacementImage.image.width = tileWidth;
+      this._canvasContext.putImageData(replacementImage.imageData.rawData, tile.x * tileWidth, tile.y * tileHeight);
     });
   }
 
@@ -63,7 +64,6 @@ export class ImageProcessorService {
 
       for (let tileYIndex = 0; tileYIndex < 20; tileYIndex++) {
         for (let tileXIndex = 0; tileXIndex < 20; tileXIndex++) {
-          console.log(`TileYIndex: ${tileYIndex}, tileXIndex: ${tileXIndex}, tileHeight: ${tileHeight}, tileWidth: ${tileWidth}, _canvasContext: ${JSON.stringify(this._canvasContext)}`);
           this._tileData[tileIndex] = this._getImageData(this._canvasContext, tileXIndex, tileYIndex, tileWidth, tileHeight);
           tileIndex++;
           if (tileYIndex === 19 && tileXIndex === 19) resolve();
@@ -97,7 +97,6 @@ export class ImageProcessorService {
       for (let imageIndex = 1; imageIndex < 391; imageIndex++) {
         const image = new Image();
         image.src = `assets/images/${imageIndex}.jpg`;
-        console.log(`Image ${image.src} is loading...`)
         image.onload = () => {
           const canvas: any = document.createElement('canvas'),
             ctx = canvas.getContext('2d');
@@ -109,6 +108,7 @@ export class ImageProcessorService {
           });
           if (imageIndex === 390) {
             console.log('All images have successfully loaded');
+            this._finishedLoading = !this._finishedLoading;
             resolve();
           }
         };
