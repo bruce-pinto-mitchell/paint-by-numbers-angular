@@ -30,8 +30,8 @@ export class ImageProcessorService {
       console.warn('Still loading image assets, please wait');
       return;
     }
-    const tileHeight = this._canvasContext.height / 20,
-      tileWidth = this._canvasContext.width / 20;
+    const tileHeight = this._canvasContext.canvas.height / 20,
+      tileWidth = this._canvasContext.canvas.width / 20;
 
     this._tileData.forEach((tile, index) => {
       const replacementImage = this._replacementImages[this._imageToTileMapping[index]];
@@ -94,9 +94,14 @@ export class ImageProcessorService {
 
   private _loadReplacementImages(): Promise<{}> {
     return new Promise((resolve) => {
+      const tileHeight = this._canvasContext.canvas.height / 20,
+        tileWidth = this._canvasContext.canvas.width / 20;
       for (let imageIndex = 1; imageIndex < 391; imageIndex++) {
         const image = new Image();
         image.src = `assets/images/${imageIndex}.jpg`;
+        image.height = tileHeight;
+        image.width = tileWidth;
+
         image.onload = () => {
           const canvas: any = document.createElement('canvas'),
             ctx = canvas.getContext('2d');
