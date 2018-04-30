@@ -1,4 +1,9 @@
-<h2>Welcome to {{ name }}</h2>
-How would you like to process your image?
-<a routerLink="/auto-process" routerLinkActive="active">Automatically</a>
-<a routerLink="/manual-process" routerLinkActive="active">Manually</a>
+<div id="welcomeScreen" class="flex-column">
+  <img class="logo" src="../../../../assets/images/logo/logo.jpg">
+  <h2>Welcome to {{ name }}</h2>
+  How would you like to process your image?
+  <div class="flex-row">
+    <button class="selection-button" routerLink="/auto-process" routerLinkActive="active">Automatically</button>
+    <button class="selection-button" routerLink="/manual-process" routerLinkActive="active">Manually</button>
+  </div>
+</div>

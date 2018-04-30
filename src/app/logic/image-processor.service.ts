@@ -15,7 +15,7 @@ export class ImageProcessorService {
 
   }
 
-  public init(imageSrc: string = 'assets/images/1.jpg') {
+  public init(imageSrc: string = 'assets/images/2.jpg') {
     this._imageToProcess = this.getImageToProcess(imageSrc);
     this._imageToProcess.onload = () => {
       this.drawImageToScreen()

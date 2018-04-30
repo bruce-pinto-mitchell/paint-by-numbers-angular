@@ -8,9 +8,14 @@ import {Router} from "@angular/router";
 })
 export class WelcomeComponent implements OnInit {
   public name: string = 'Paint By Numbers';
-  constructor(routerService: Router) { }
+  constructor() {
+
+  }
 
   ngOnInit() {
+    const screenBody = document.getElementById('welcomeScreen');
+    screenBody.style.height = window.innerHeight.toString();
+    screenBody.style.width = window.innerWidth.toString();
   }
 
 }
