@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { AutoProcessComponent } from './feature/auto-process/auto-process.component';
-import { ManualProcessComponent } from './feature/manual-process/manual-process.component';
-import { AppRoutingModule } from "./engine/app-routing/app-routing.module";
-import { WelcomeComponent } from './feature/welcome/welcome.component';
+import { AutoProcessComponent } from './presentation/feature/auto-process/auto-process.component';
+import { ManualProcessComponent } from './presentation/feature/manual-process/manual-process.component';
+import { AppRoutingModule } from "./presentation/engine/app-routing/app-routing.module";
+import { WelcomeComponent } from './presentation/feature/welcome/welcome.component';
 
 
 @NgModule({
