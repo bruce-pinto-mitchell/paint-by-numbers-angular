@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ImageProcessorService} from '../../../logic/image-processor.service';
 import {NguCarousel, NguCarouselStore} from '@ngu/carousel';
-import {setTimeout} from "timers";
 
 @Component({
   selector: 'app-manual-process',
   templateUrl: './manual-process.component.html',
-  styleUrls: ['./manual-process.component.css', '../../../app.component.css'],
-  providers: [ImageProcessorService]
+  styleUrls: ['./manual-process.component.css', '../../../app.component.css']
 })
 export class ManualProcessComponent implements OnInit {
 
@@ -24,7 +22,7 @@ export class ManualProcessComponent implements OnInit {
     this.selectedImage = 1;
     for (let imageIndex = 1; imageIndex < 391; imageIndex++) {
       const imagePath = `assets/images/${imageIndex}.jpg`;
-        this.carouselTileItems.push({src: imagePath});
+      this.carouselTileItems.push({src: imagePath});
     }
 
     this.carouselTile = {
@@ -83,9 +81,13 @@ export class ManualProcessComponent implements OnInit {
   public onProcessImageClicked() {
     this.imageSelected = !this.imageSelected;
     this._imageProcessorService.init(this.carouselTileItems[this.selectedImage - 1].src);
-    setTimeout(() => {
-      this._imageProcessorService.onProcessImageClicked();
-    }, 3000);
+    this._imageProcessorService.subscribeToImagesLoaded(this._onImagesLoaded.bind(this));
+  }
+
+  private _onImagesLoaded(): void {
+    this._imageProcessorService.onProcessImageClicked();
+    const processingImageText = document.getElementById('processingImageText');
+    processingImageText.innerText = 'Output Image';
   }
 
 

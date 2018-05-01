@@ -1,7 +1,10 @@
 import {Injectable} from '@angular/core';
+import {Subscription, Subject} from 'rxjs';
 
 @Injectable()
 export class ImageProcessorService {
+
+  public finishedLoading: boolean = false;
 
   private _imageToProcess;
   private _canvasContext;
@@ -9,29 +12,31 @@ export class ImageProcessorService {
   private _tileData: Array<any> = [];
   private _replacementImages: Array<any> = [];
   private _imageToTileMapping: Array<any> = [];
-  private _finishedLoading: boolean = false;
+  private _tileDivision: number = 20;
 
-  constructor() {
-
-  }
+  private _imagesLoadedObservable: Subject<void> = new Subject<void>();
 
   public init(imageSrc: string = 'assets/images/2.jpg') {
-    this._imageToProcess = this.getImageToProcess(imageSrc);
+    this._imageToProcess = this._getImageToProcess(imageSrc);
     this._imageToProcess.onload = () => {
-      this.drawImageToScreen()
-        .then(this.createImageTiles.bind(this))
+      this._drawImageToScreen()
+        .then(this._createImageTiles.bind(this))
         .then(this._loadReplacementImages.bind(this))
         .then(this._diffTilesToReplacementImagesRGB.bind(this));
     };
   }
 
-  onProcessImageClicked(): void {
-    if (!this._finishedLoading) {
+  public subscribeToImagesLoaded(callback): Subscription {
+    return this._imagesLoadedObservable.subscribe(callback);
+  }
+
+  public onProcessImageClicked(): void {
+    if (!this.finishedLoading) {
       console.warn('Still loading image assets, please wait');
       return;
     }
-    const tileHeight = this._canvasContext.canvas.height / 20,
-      tileWidth = this._canvasContext.canvas.width / 20;
+    const tileHeight = this._canvasContext.canvas.height / this._tileDivision,
+      tileWidth = this._canvasContext.canvas.width / this._tileDivision;
 
     this._tileData.forEach((tile, index) => {
       const replacementImage = this._replacementImages[this._imageToTileMapping[index]];
@@ -41,13 +46,17 @@ export class ImageProcessorService {
     });
   }
 
-  getImageToProcess(imageSrc: string): any {
+  public setDivisions(divisions: number): void {
+    this._tileDivision = divisions;
+  }
+
+  private _getImageToProcess(imageSrc: string): any {
     const image = new Image();
     image.src = imageSrc;
     return image;
   }
 
-  drawImageToScreen(): Promise<{}> {
+  private _drawImageToScreen(): Promise<{}> {
     return new Promise((resolve) => {
       this._canvas = document.getElementById('imageToProcess');
       this._canvasContext = this._canvas.getContext('2d');
@@ -56,14 +65,14 @@ export class ImageProcessorService {
     });
   }
 
-  createImageTiles() {
+  private _createImageTiles(): Promise<{}> {
     return new Promise((resolve) => {
       let tileIndex = 0;
-      const tileHeight = this._canvasContext.canvas.height / 20,
-        tileWidth = this._canvasContext.canvas.width / 20;
+      const tileHeight = this._canvasContext.canvas.height / this._tileDivision,
+        tileWidth = this._canvasContext.canvas.width / this._tileDivision;
 
-      for (let tileYIndex = 0; tileYIndex < 20; tileYIndex++) {
-        for (let tileXIndex = 0; tileXIndex < 20; tileXIndex++) {
+      for (let tileYIndex = 0; tileYIndex < this._tileDivision; tileYIndex++) {
+        for (let tileXIndex = 0; tileXIndex < this._tileDivision; tileXIndex++) {
           this._tileData[tileIndex] = this._getImageData(this._canvasContext, tileXIndex, tileYIndex, tileWidth, tileHeight);
           tileIndex++;
           if (tileYIndex === 19 && tileXIndex === 19) resolve();
@@ -74,11 +83,11 @@ export class ImageProcessorService {
 
   private _getImageData(context, xIndex, yIndex, width, height): any {
     const tileData = context.getImageData(xIndex * width, yIndex * height, width, height),
-      tileDataRGBAverages = this.getRGBAverage(tileData.data);
+      tileDataRGBAverages = this._getRGBAverage(tileData.data);
     return {rawData: tileData, ...tileDataRGBAverages, x: xIndex, y: yIndex};
   }
 
-  getRGBAverage(data): any {
+  private _getRGBAverage(data): any {
     let red = 0,
       green = 0,
       blue = 0;
@@ -94,8 +103,8 @@ export class ImageProcessorService {
 
   private _loadReplacementImages(): Promise<{}> {
     return new Promise((resolve) => {
-      const tileHeight = this._canvasContext.canvas.height / 20,
-        tileWidth = this._canvasContext.canvas.width / 20;
+      const tileHeight = this._canvasContext.canvas.height / this._tileDivision,
+        tileWidth = this._canvasContext.canvas.width / this._tileDivision;
       for (let imageIndex = 1; imageIndex < 391; imageIndex++) {
         const image = new Image();
         image.src = `assets/images/${imageIndex}.jpg`;
@@ -113,7 +122,7 @@ export class ImageProcessorService {
           });
           if (imageIndex === 390) {
             console.log('All images have successfully loaded');
-            this._finishedLoading = !this._finishedLoading;
+            this.finishedLoading = !this.finishedLoading;
             resolve();
           }
         };
@@ -135,6 +144,7 @@ export class ImageProcessorService {
         }
       });
     });
+    this._imagesLoadedObservable.next();
   }
 
   private _getImageComparison(image, image1): number {

@@ -14,9 +14,12 @@
 }
 
 .selection-button {
-  color: black;
-  background-color: #3e74bc;
+  font-size: 18px;
+  font-family: 'Permanent Marker', cursive;
+  color: #343434;
+  background-color: #fff462;
   border-radius: 8px 8px;
+  border-color: #fff462;
   width: 160px;
   height: 60px;
   margin: 20px;

@@ -1,9 +1,18 @@
 <div id="welcomeScreen" class="flex-column">
-  <img class="logo" src="../../../../assets/images/logo/logo.jpg">
-  <h2>Welcome to {{ name }}</h2>
-  How would you like to process your image?
+  <h2 class="header-text">{{ name }}</h2>
+  <div class="flex-row margin-bottom sub-header-text">
+    If you would like, you can specify the parameters for processing the image below. Defaults are set should you choose
+    not to.
+  </div>
+  <div class="flex-row margin-bottom sub-header-text">
+    <label class="divisions-label">Image tile division (default is 20x20, enter only one value, eg. 50):</label>
+    <input type="text" [(ngModel)]="tileDivision" (input)="onTileDivisionChanged()">
+  </div>
+  <div class="flex-row sub-header-text">
+    Would you like to select the image to process?
+  </div>
   <div class="flex-row">
-    <button class="selection-button" routerLink="/auto-process" routerLinkActive="active">Automatically</button>
-    <button class="selection-button" routerLink="/manual-process" routerLinkActive="active">Manually</button>
+    <button class="selection-button" routerLink="/manual-process" routerLinkActive="active">Yes, I would!</button>
+    <button class="selection-button" routerLink="/auto-process" routerLinkActive="active">No - choose for me!</button>
   </div>
 </div>

@@ -15,6 +15,7 @@
 <div class="flex-column">
   <button class="selection-button" (click)="onProcessImageClicked()">Process Image {{selectedImage}}</button>
 </div>
-  <div *ngIf="imageSelected">
+  <div class="flex-column" *ngIf="imageSelected">
+    <h2 class="header-text" id="processingImageText">Processing image...</h2>
   <canvas id="imageToProcess"></canvas>
 </div>

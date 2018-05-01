@@ -1,3 +1,18 @@
-.logo {
-  width: 400px;
+.header-text {
+  font-size: 70px;
+  color: #f8564b;
+  margin-bottom: 30px;
+}
+
+.divisions-label {
+  margin-right: 20px;
+}
+
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.sub-header-text {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
 }

@@ -4,8 +4,7 @@ import {ImageProcessorService} from '../../../logic/image-processor.service';
 @Component({
   selector: 'app-auto-process',
   templateUrl: './auto-process.component.html',
-  styleUrls: ['./auto-process.component.css', '../../../app.component.css'],
-  providers: [ImageProcessorService]
+  styleUrls: ['./auto-process.component.css', '../../../app.component.css']
 })
 export class AutoProcessComponent implements OnInit {
 
