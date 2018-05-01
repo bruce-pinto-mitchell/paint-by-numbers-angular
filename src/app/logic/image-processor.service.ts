@@ -52,6 +52,7 @@ export class ImageProcessorService {
 
   private _getImageToProcess(imageSrc: string): any {
     const image = new Image();
+    // image.crossOrigin = "Anonymous";
     image.src = imageSrc;
     return image;
   }
@@ -107,6 +108,7 @@ export class ImageProcessorService {
         tileWidth = this._canvasContext.canvas.width / this._tileDivision;
       for (let imageIndex = 1; imageIndex < 391; imageIndex++) {
         const image = new Image();
+        // image.crossOrigin = "Anonymous";
         image.src = `assets/images/${imageIndex}.jpg`;
         image.height = tileHeight;
         image.width = tileWidth;
