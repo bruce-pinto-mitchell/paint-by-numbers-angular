@@ -1,0 +1,26 @@
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.selection-button {
+  font-size: 18px;
+  font-family: 'Permanent Marker', cursive;
+  color: #343434;
+  background-color: #fff462;
+  border-radius: 8px 8px;
+  border-color: #fff462;
+  width: 160px;
+  height: 60px;
+  margin: 20px;
+}
