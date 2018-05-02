@@ -18,7 +18,6 @@ export class ManualProcessComponent implements OnInit, OnDestroy {
   private _onImagesLoadedSubscription: Subscription;
 
   constructor(private _imageProcessorService: ImageProcessorService) {
-    // this._imageProcessorService.init();
   }
 
   ngOnInit() {
@@ -67,7 +66,7 @@ export class ManualProcessComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._onImagesLoadedSubscription.unsubscribe();
+    if (this._onImagesLoadedSubscription) this._onImagesLoadedSubscription.unsubscribe();
   }
 
   public carouselTileLoad(evt: any) {
@@ -88,7 +87,7 @@ export class ManualProcessComponent implements OnInit, OnDestroy {
   public onProcessImageClicked() {
     this.imageSelected = !this.imageSelected;
     this._imageProcessorService.init(this.carouselTileItems[this.selectedImage - 1].src);
-    this._imageProcessorService.subscribeToImagesLoaded(this._onImagesLoaded.bind(this));
+    this._onImagesLoadedSubscription = this._imageProcessorService.subscribeToImagesLoaded(this._onImagesLoaded.bind(this));
   }
 
   private _onImagesLoaded(): void {
