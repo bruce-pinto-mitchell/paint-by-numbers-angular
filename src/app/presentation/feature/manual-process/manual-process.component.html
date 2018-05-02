@@ -1,7 +1,10 @@
+<div class="flex-row">
+  <button class="selection-button" routerLink="/welcome" routerLinkActive="active">< Back to landing</button>
+</div>
 <div class="flex-column">
   <h2 class="header-text">Please select the image you would like to process:</h2>
 </div>
-<ngu-carousel
+<ngu-carousel class="banner"
   [inputs]="carouselTile"
   (carouselLoad)="carouselTileLoad($event)"
   (onMove)="onmoveFn($event)">
@@ -13,9 +16,19 @@
   <button NguCarouselNext class='rightRs'>&gt;</button>
 </ngu-carousel>
 <div class="flex-column">
-  <button class="selection-button" (click)="onProcessImageClicked()">Process Image {{selectedImage}}</button>
+  <div class="flex-row">
+    <button class="selection-button" (click)="onProcessImageClicked()" [disabled]="imageSelected">Process Image {{selectedImage}}</button>
+    <button class="selection-button" (click)="onResetClicked()" [disabled]="!imageProcessorService.finishedLoading">
+      Reset
+    </button>
+  </div>
 </div>
-  <div class="flex-column" *ngIf="imageSelected">
-    <h2 class="header-text" id="processingImageText">Processing image...</h2>
-  <canvas id="imageToProcess"></canvas>
+<div class="flex-column">
+  <div id="downloadContainer"></div>
+  <div class="flex-row">
+    <div class="flex-column" *ngIf="imageSelected">
+      <h2 class="header-text" id="processingImageText">Processing image...</h2>
+      <canvas id="imageToProcess"></canvas>
+    </div>
+  </div>
 </div>

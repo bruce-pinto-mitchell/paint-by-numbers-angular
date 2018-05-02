@@ -1,5 +1,16 @@
+<div class="flex-row">
+  <button class="selection-button" routerLink="/welcome" routerLinkActive="active">< Back to landing</button>
+</div>
 <div class="flex-column">
   <h1 class="header-text">Image to Process:</h1>
   <canvas id="imageToProcess"></canvas>
-  <button class="selection-button" (click)="onProcessImageClicked()">Process Image</button>
+  <div class="flex-row">
+    <div id="downloadContainer"></div>
+  </div>
+  <div class="flex-row">
+    <button class="selection-button" (click)="onProcessImageClicked()">Process Image</button>
+    <button class="selection-button" (click)="onResetClicked()" [disabled]="!imageProcessorService.finishedLoading">
+      Reset
+    </button>
+  </div>
 </div>
