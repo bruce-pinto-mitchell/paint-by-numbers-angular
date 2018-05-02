@@ -24,3 +24,15 @@
   height: 60px;
   margin: 20px;
 }
+
+button:disabled:hover {
+  cursor: not-allowed;
+}
+
+a {
+  border-style: solid;
+  border-width : 1px 1px 1px 1px;
+  text-decoration : none;
+  padding : 4px;
+  border-color : #000000
+}

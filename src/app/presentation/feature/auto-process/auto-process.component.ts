@@ -20,4 +20,13 @@ export class AutoProcessComponent implements OnInit {
   public onProcessImageClicked(): void {
     this._imageProcessorService.onProcessImageClicked();
   }
+
+  public onResetClicked(): void {
+    this._imageProcessorService.reset();
+    this._imageProcessorService.init(this.imageSrc);
+  }
+
+  get imageProcessorService(): ImageProcessorService {
+    return this._imageProcessorService;
+  }
 }

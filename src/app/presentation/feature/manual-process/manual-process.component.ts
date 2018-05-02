@@ -29,7 +29,7 @@ export class ManualProcessComponent implements OnInit, OnDestroy {
 
     this.carouselTile = {
       grid: {xs: 2, sm: 3, md: 3, lg: 5, all: 0},
-      slide: 2,
+      slide: 1,
       speed: 400,
       animation: 'lazy',
       point: {
@@ -86,15 +86,23 @@ export class ManualProcessComponent implements OnInit, OnDestroy {
 
   public onProcessImageClicked() {
     this.imageSelected = !this.imageSelected;
-    this._imageProcessorService.init(this.carouselTileItems[this.selectedImage - 1].src);
+    this._imageProcessorService.init(this.carouselTileItems[this.selectedImage].src);
     this._onImagesLoadedSubscription = this._imageProcessorService.subscribeToImagesLoaded(this._onImagesLoaded.bind(this));
+  }
+
+  public onResetClicked(): void {
+    this._imageProcessorService.reset();
+    this.imageSelected = !this.imageSelected;
   }
 
   private _onImagesLoaded(): void {
     this._imageProcessorService.onProcessImageClicked();
     const processingImageText = document.getElementById('processingImageText');
-    processingImageText.innerText = 'Output Image';
+    if (processingImageText) processingImageText.innerText = 'Output Image';
   }
 
+  get imageProcessorService(): ImageProcessorService {
+    return this._imageProcessorService;
+  }
 
 }

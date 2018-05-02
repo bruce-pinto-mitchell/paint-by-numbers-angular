@@ -17,6 +17,7 @@ export class ImageProcessorService {
   private _imagesLoadedObservable: Subject<void> = new Subject<void>();
 
   public init(imageSrc: string = 'assets/images/2.jpg') {
+    this.finishedLoading = false;
     this._imageToProcess = this._getImageToProcess(imageSrc);
     this._imageToProcess.onload = () => {
       this._drawImageToScreen()
@@ -24,6 +25,28 @@ export class ImageProcessorService {
         .then(this._loadReplacementImages.bind(this))
         .then(this._diffTilesToReplacementImagesRGB.bind(this));
     };
+  }
+
+  public reset(): void {
+    this._canvasContext.clearRect(0, 0, this._canvas.width, this._canvas.height);
+    const downloadContainer = document.getElementById('downloadContainer');
+    if (downloadContainer.children.length === 0) return;
+    const downloadLink = document.getElementById('downloadLink');
+    downloadContainer.removeChild(downloadLink);
+  }
+
+  public _addDownloadImageLink(): void {
+    const downloadContainer = document.getElementById('downloadContainer');
+    if (downloadContainer.children.length > 0) return;
+    const downloadLink = document.createElement('a');
+    downloadLink.innerHTML = 'Download Image';
+    downloadLink.id = 'downloadLink';
+    downloadLink.classList.add('selection-button');
+    downloadLink.addEventListener('click', () => {
+      downloadLink.href = this._canvas.toDataURL();
+      downloadLink.download = "transformedImage.png";
+    }, false);
+    downloadContainer.appendChild(downloadLink);
   }
 
   public subscribeToImagesLoaded(callback): Subscription {
@@ -44,6 +67,7 @@ export class ImageProcessorService {
       replacementImage.image.width = tileWidth;
       this._canvasContext.putImageData(replacementImage.imageData.rawData, tile.x * tileWidth, tile.y * tileHeight);
     });
+    this._addDownloadImageLink();
   }
 
   public setDivisions(divisions: number): void {
