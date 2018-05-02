@@ -1,18 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ImageProcessorService} from '../../../logic/image-processor.service';
-import {NguCarousel, NguCarouselStore} from '@ngu/carousel';
+import {NguCarousel} from '@ngu/carousel';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-manual-process',
   templateUrl: './manual-process.component.html',
   styleUrls: ['./manual-process.component.css', '../../../app.component.css']
 })
-export class ManualProcessComponent implements OnInit {
+export class ManualProcessComponent implements OnInit, OnDestroy {
 
   public carouselTileItems: Array<any> = [];
   public carouselTile: NguCarousel;
   public selectedImage: any;
   public imageSelected: Boolean = false;
+
+  private _onImagesLoadedSubscription: Subscription;
 
   constructor(private _imageProcessorService: ImageProcessorService) {
     // this._imageProcessorService.init();
@@ -61,6 +64,10 @@ export class ManualProcessComponent implements OnInit {
       touch: true,
       easing: 'ease'
     }
+  }
+
+  public ngOnDestroy(): void {
+    this._onImagesLoadedSubscription.unsubscribe();
   }
 
   public carouselTileLoad(evt: any) {
